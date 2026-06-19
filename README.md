@@ -1,28 +1,83 @@
-# README
+<h1 align="center">⚖️ ML_POC_ILAO</h1>
 
-## Overview
-This repository contains small-scale machine learning (ML) models trained on dummy datasets for exploratory and trial purposes. The purpose of this repository is to demonstrate the potential of different ML techniques, including their strengths and limitations, in handling specific tasks. The models included in this repository are:
+<p align="center">
+  <em>A proof-of-concept comparing DistilBERT, Logistic Regression, and Random Forest for classifying legal aid queries — built for the Illinois Legal Aid Online (ILAO) use case.</em>
+</p>
 
-- **DistilBERT**: A lightweight, distilled version of BERT for natural language processing tasks.
-- **Logistic Regression**: A simple yet effective linear model for binary classification.
-- **Random Forest Classifier**: An ensemble model that combines multiple decision trees for robust classification results.
+<p align="center">
+  <img alt="status" src="https://img.shields.io/badge/status-proof--of--concept-orange">
+  <img alt="language" src="https://img.shields.io/badge/notebooks-Jupyter-informational">
+  <img alt="maintainer" src="https://img.shields.io/badge/maintained%20by-QED42-blue">
+</p>
 
-### How These Models Can Help Classify Queries
-The models provided in this repository offer diverse capabilities for query classification tasks. Here's how each can assist in classifying queries effectively:
+<p align="center">
+  <a href="#-overview">Overview</a> •
+  <a href="#-models-compared">Models</a> •
+  <a href="#-repository-structure">Structure</a> •
+  <a href="#%EF%B8%8F-setup">Setup</a> •
+  <a href="#-usage">Usage</a> •
+  <a href="#-datasets">Datasets</a>
+</p>
 
-1. **DistilBERT**:
-   - Capable of understanding and processing natural language queries with contextual awareness.
-   - Useful for classifying queries into categories based on their semantic meaning.
-   - Works well in scenarios involving complex or conversational query structures.
+---
 
-2. **Logistic Regression**:
-   - Provides a straightforward method for binary classification tasks.
-   - Suitable for classifying simple queries where the feature space is limited and well-structured.
-   - Offers interpretability, allowing insights into which features contribute most to the classification.
+## 📋 Overview
 
-3. **Random Forest Classifier**:
-   - An excellent choice for handling high-dimensional and diverse datasets.
-   - Capable of managing noisy data and extracting important features for classification.
-   - Performs well for queries with structured data or a mix of categorical and numerical features.
+This repository explores how different machine learning techniques classify incoming legal aid queries. It's an exploratory POC — models are trained on small, mostly synthetic query datasets to compare trade-offs in accuracy, interpretability, and complexity before committing to one approach for a production pipeline.
 
-By leveraging these models, you can classify queries accurately in various scenarios, ranging from natural language processing to structured data analysis. They serve as foundational tools that can be further customized for specific tasks, ensuring efficient query categorization without the need for additional guardrails in many cases
+The goal isn't to pick a single "winner." It's to map each model's strengths to the kind of query it handles best, so a future routing layer can apply the right model per query type instead of forcing every query through one approach.
+
+## 🧠 Models Compared
+
+| Model | Notebook | Strengths | Best suited for |
+|---|---|---|---|
+| 🤖 **DistilBERT** | `DistiledBert.ipynb` | Understands query semantics and context | Complex or conversational natural language queries |
+| 📈 **Logistic Regression** | `Logistic_Regression.ipynb` | Fast, interpretable, easy to debug | Simple binary classification with a well-structured feature space |
+| 🌲 **Random Forest** | `Ml_Model_for_Binary.ipynb` | Handles noisy, high-dimensional, or mixed data well | Structured queries or messier real-world inputs |
+
+## 📁 Repository Structure
+
+```
+.
+├── DistiledBert.ipynb                                  # DistilBERT-based query classifier
+├── Logistic_Regression.ipynb                           # Logistic Regression baseline
+├── Ml_Model_for_Binary.ipynb                            # Random Forest binary classifier
+├── legal_aid_queries.csv                                # Raw legal aid query dataset
+├── legal_aid_queries_processed.csv                      # Cleaned/preprocessed version of the above
+├── generated_legal_queries.csv                          # Synthetic legal queries for testing
+├── test_queries.csv                                     # Held-out test set
+└── ILAO Generated Semantic Search Tests - Sheet1.csv    # Semantic search test cases for ILAO
+```
+
+## 🛠️ Setup
+
+```bash
+git clone https://github.com/qed42/ML_POC_ILAO.git
+cd ML_POC_ILAO
+pip install transformers torch scikit-learn pandas numpy
+jupyter notebook
+```
+
+## ▶️ Usage
+
+1. Open the notebook for the model you want to run — `DistiledBert.ipynb`, `Logistic_Regression.ipynb`, or `Ml_Model_for_Binary.ipynb`.
+2. Run the cells top to bottom. Each notebook loads one of the CSV datasets, trains the model, and evaluates it on a held-out split.
+3. To compare models like-for-like, run each notebook against the same query set (`test_queries.csv`) and compare predictions.
+
+## 🗂️ Datasets
+
+| File | Description |
+|---|---|
+| `legal_aid_queries.csv` | Original collection of legal aid queries used for training and evaluation |
+| `legal_aid_queries_processed.csv` | Cleaned and normalized version of the same data, ready for model input |
+| `generated_legal_queries.csv` | Synthetic queries generated to expand coverage beyond the original dataset |
+| `test_queries.csv` | Held-out set used to evaluate model performance after training |
+| `ILAO Generated Semantic Search Tests - Sheet1.csv` | Test cases targeting semantic search behavior for the ILAO use case |
+
+## ⚠️ Status
+
+This is a proof-of-concept built on dummy and synthetic data, not a production-ready classifier. Results should be treated as directional and validated against real ILAO query traffic before being used to route or filter live queries.
+
+## 📄 License
+
+This project is maintained by **QED42**.
